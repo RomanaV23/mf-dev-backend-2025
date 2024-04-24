@@ -10,7 +10,7 @@ namespace mf_dev_backend_2025.Controllers
     {
         private readonly AppDbContext _context;
 
-       public VeiculosController(AppDbContext Context)
+        public VeiculosController(AppDbContext Context)
         {
             _context = Context;
         }
@@ -29,7 +29,7 @@ namespace mf_dev_backend_2025.Controllers
         }
         [HttpPost]
         public async Task<IActionResult> Create(Veiculo veiculo)
-            {
+        {
             if (ModelState.IsValid)
             {
                 _context.Veiculos.Add(veiculo);
@@ -56,7 +56,7 @@ namespace mf_dev_backend_2025.Controllers
         public async Task<IActionResult> Edit(int id, Veiculo veiculo)
         {
             if (id != veiculo.Id)
-            return NotFound();
+                return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -68,5 +68,46 @@ namespace mf_dev_backend_2025.Controllers
             return View();
         }
 
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var dados = await _context.Veiculos.FindAsync(id);
+
+            if (id == null)
+                return NotFound();
+
+            return View(dados);
+        }
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var dados = await _context.Veiculos.FindAsync(id);
+
+            if (id == null)
+                return NotFound();
+
+            return View(dados);
+
+        }
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var dados = await _context.Veiculos.FindAsync(id);
+
+            if (id == null)
+                return NotFound();
+
+            _context.Veiculos.Remove(dados);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
     }
- }
+}
